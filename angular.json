@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "niki-saunak-app": {
+    "niki-saunak-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "niki-saunak-app:build:production"
+              "buildTarget": "niki-saunak-frontend:build:production"
             },
             "development": {
-              "buildTarget": "niki-saunak-app:build:development"
+              "buildTarget": "niki-saunak-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
