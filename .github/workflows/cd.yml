@@ -19,5 +19,6 @@ jobs:
           script: |
             echo "hi in server"
             docker pull nikitasreenath/niki-saunak:b58ea9d4cdae795553598ce61cf04468baec4e5d
+            docker image list
             docker rm -f $(docker ps -a -q) 
-            docker run -d --restart unless-stopped -p 8080:80 niki-saunak:b58ea9d4cdae795553598ce61cf04468baec4e5d
+            docker run -d --restart unless-stopped -p 8080:80 nikitasreenath/niki-saunak:b58ea9d4cdae795553598ce61cf04468baec4e5d
