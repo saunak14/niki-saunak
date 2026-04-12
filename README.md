@@ -1,8 +1,8 @@
 # NikiSaunak Website Frontend
 
-This repo contains the frontend for the nikisaunak.com website written in Angular. This project is a joint collaboration with @nikitasreenath
+This repo contains the frontend for the nikisaunak.com website written in Angular. This project is a joint collaboration with [@nikitasreenath](https://github.com/nikitasreenath)
 
-## Installation Instructions
+## Local Installation Instructions
 
 ### Prerequisites
 
@@ -96,3 +96,18 @@ Once running, open your browser and navigate to `http://localhost:8080/`
 
 > [!NOTE]
 > The Docker build runs `npm ci` and `npm run build` inside the container, so no local Node.js installation is needed. The final image contains only NGINX and the compiled static files.
+
+## CI/CD
+
+CI/CD pipeline is setup using [GitHub Actions](https://docs.github.com/en/actions/get-started/quickstart). Currently the workflow is executed when a new Release Tag is created from `main` branch. It can be run manually for feature branches.
+
+There are two stages of the CI/CD pipelines:
+- **docker-build**: builds and tags the image, then pushes it to Docker Hub
+- **deploy-new-image**: pulls the image to the server, then replaces the docker container
+
+## Hosting
+
+Application is self-hosted on a [Digital Ocean Droplet](https://www.digitalocean.com/products/droplets) hosted [here](https://cloud.digitalocean.com/droplets/564358476/graphs?i=975c64&period=hour) with custom domain and SSL from [porkbun.com](https://porkbun.com/account/domainsSpeedy).
+
+##
+**Application can be reached at [nikisaunak.com](https://nikisaunak.com/)!**

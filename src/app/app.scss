@@ -1,9 +1,9 @@
 .app-navbar {
-  background-color: #ffffff;
+  background-color: var(--ns-bg);
   border-bottom: 1px solid var(--ns-border);
 
   .nav-logo {
-    height: 60px;
+    height: 120px;
     width: auto;
   }
 }
