@@ -1,2 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
 @import "bootstrap/scss/bootstrap";
+
+:root {
+  --ns-bg: #f7f7f5;
+  --ns-card: #ffffff;
+  --ns-text: #2c2c2c;
+  --ns-text-muted: #6c757d;
+  --ns-accent: #c9a96e;
+  --ns-border: #e8e8e3;
+}
+
+body {
+  background-color: var(--ns-bg);
+  color: var(--ns-text);
+}
