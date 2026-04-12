@@ -18,4 +18,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "hi in server"
-            docker pull nikitasreenath/nikisaunak:1.0.0
+            docker pull nikitasreenath/niki-saunak:b58ea9d4cdae795553598ce61cf04468baec4e5d
+            docker rm -f $(docker ps -a -q) 
+            docker run -d --restart unless-stopped -p 8080:80 niki-saunak
