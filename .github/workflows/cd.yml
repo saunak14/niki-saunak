@@ -19,5 +19,5 @@ jobs:
           script: |
             echo "hi in server"
             whoami
-            docker image list
-            docker ps -a
+            sudo docker image list
+            sudo docker ps -a
