@@ -17,9 +17,10 @@ jobs:
       - name: Build and tag docker image
         run: docker build -t nikitasreenath/nikisaunak:${{ github.sha }} .
       - name: Push docker image
-        run: docker push nikitasreenath/niki-saunak:${{ github.sha }}
+        run: docker push nikitasreenath/nikisaunak:${{ github.sha }}
   
-  deploy-new-image: 
+  deploy-new-image:
+    needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
       - run: echo "SSH into Droplet"
