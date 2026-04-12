@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
       - name: Build and tag docker image
-        run: docker build -t nikitasreenath/niki-saunak:${{ github.ref_name }} .
+        run: docker build -t nikitasreenath/niki-saunak:${{ github.sha }} .
       - name: Push docker image
-        run: docker push nikitasreenath/niki-saunak:${{ github.ref_name }}
+        run: docker push nikitasreenath/niki-saunak:${{ github.sha }}
 
