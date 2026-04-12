@@ -18,6 +18,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "hi in server"
-            whoami
-            docker image list
-            docker ps -a
+            docker pull nikitasreenath/nikisaunak:1.0.0
