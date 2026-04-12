@@ -99,7 +99,7 @@ Once running, open your browser and navigate to `http://localhost:8080/`
 
 ## CI/CD
 
-CI/CD pipeline is setup using [GitHub Actions](https://docs.github.com/en/actions/get-started/quickstart). Currently the workflow is only executed when a new Release Tag is created from `main` branch.
+CI/CD pipeline is setup using [GitHub Actions](https://docs.github.com/en/actions/get-started/quickstart). Currently the workflow is executed when a new Release Tag is created from `main` branch. It can be run manually for feature branches.
 
 There are two stages of the CI/CD pipelines:
 - **docker-build**: builds and tags the image, then pushes it to Docker Hub
