@@ -1,0 +1,23 @@
+name: cd
+run-name: Pulling image to server
+on: [push]
+  # push:
+  #   branches:
+  #     - 'main'
+jobs:
+  deploy-new-image:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "SSH into Droplet"
+      - name: Login to Droplet
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "hi in server"
+            whoami
+            docker image list
+            docker ps -a
