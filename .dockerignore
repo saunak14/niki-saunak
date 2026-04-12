@@ -1,0 +1,26 @@
+# Dependencies — reinstalled inside the container via npm ci
+node_modules/
+
+# Previous build output — rebuilt inside the container
+dist/
+
+# Git history — not needed in the image
+.git/
+
+# Angular build cache
+.angular/
+
+# IDE and editor files
+.vscode/
+.history/
+.idea/
+
+# Test output
+coverage/
+
+# Logs
+*.log
+
+# Docker meta files
+Dockerfile
+.dockerignore

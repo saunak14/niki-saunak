@@ -65,3 +65,34 @@ npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`
+
+---
+
+## Running with Docker
+
+Docker is an alternative way to run the application locally without installing Node.js or Angular. It also mirrors the production environment.
+
+### Prerequisites
+
+Ensure Docker is installed on your machine:
+
+```bash
+docker --version
+```
+
+If it isn't installed, follow the [official Docker installation guide](https://docs.docker.com/get-docker/) for your platform.
+
+### Build and Run
+
+```bash
+# Build the Docker image (runs the Angular build internally)
+docker build -t niki-saunak .
+
+# Start the container
+docker run --rm -p 8080:80 niki-saunak
+```
+
+Once running, open your browser and navigate to `http://localhost:8080/`
+
+> [!NOTE]
+> The Docker build runs `npm ci` and `npm run build` inside the container, so no local Node.js installation is needed. The final image contains only NGINX and the compiled static files.
