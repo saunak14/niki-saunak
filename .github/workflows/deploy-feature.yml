@@ -11,13 +11,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: echo "Building Docker image from ${{ github.ref_name }}"
+      - run: echo "Building Docker image from ${{ github.sha }}"
       - name: Checkout repo
         uses: actions/checkout@v5
       - name: Build and tag docker image
-        run: docker build -t nikitasreenath/nikisaunak:${{ github.ref_name }} .
+        run: docker build -t nikitasreenath/nikisaunak:${{ github.sha }} .
       - name: Push docker image
-        run: docker push nikitasreenath/niki-saunak:${{ github.ref_name }}
+        run: docker push nikitasreenath/niki-saunak:${{ github.sha }}
   
   deploy-new-image: 
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker pull nikitasreenath/nikisaunak:${{ github.ref_name }}
+            docker pull nikitasreenath/nikisaunak:${{ github.sha }}
             docker image list
             docker ps -aq | xargs docker rm -f
-            docker run -d --restart unless-stopped --name niki-saunak-frontend -p 8080:80 nikitasreenath/nikisaunak:${{ github.ref_name }}
+            docker run -d --restart unless-stopped --name niki-saunak-frontend -p 8080:80 nikitasreenath/nikisaunak:${{ github.sha }}
