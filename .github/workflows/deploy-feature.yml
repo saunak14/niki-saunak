@@ -1,6 +1,6 @@
 name: feature
-run-name: Building and Pushing Docker Image
-on: [push]
+run-name: FEATURE - Building and Pushing Docker Image
+on: workflow_dispatch
 
 jobs:
   docker-build-push:
