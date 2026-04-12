@@ -1,0 +1,47 @@
+<div class="snake-page">
+  <div class="snake-header">
+    <a class="btn-back" routerLink="/">← Home</a>
+
+    <div class="snake-scores">
+      <span class="score-label">Score <strong>{{ score() }}</strong></span>
+      <span class="score-sep">·</span>
+      <span class="score-label">Best <strong>{{ highScore() }}</strong></span>
+    </div>
+
+    <button
+      class="btn-pause"
+      [disabled]="gameState() !== 'playing' && gameState() !== 'paused'"
+      (click)="togglePause()"
+    >
+      {{ gameState() === 'paused' ? '▶ Resume' : '⏸ Pause' }}
+    </button>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas #gameCanvas class="game-canvas"></canvas>
+  </div>
+
+  <!-- Mobile D-pad -->
+  <div class="dpad d-flex d-md-none">
+    <div class="dpad-row">
+      <button class="dpad-btn" (click)="move('UP')" aria-label="Up">▲</button>
+    </div>
+    <div class="dpad-row">
+      <button class="dpad-btn" (click)="move('LEFT')" aria-label="Left">◀</button>
+      <button class="dpad-btn dpad-center" (click)="togglePause()" aria-label="Pause">⏸</button>
+      <button class="dpad-btn" (click)="move('RIGHT')" aria-label="Right">▶</button>
+    </div>
+    <div class="dpad-row">
+      <button class="dpad-btn" (click)="move('DOWN')" aria-label="Down">▼</button>
+    </div>
+  </div>
+
+  @if (gameState() === 'idle') {
+    <button class="btn-action d-md-none" (click)="startGame()">Start Game</button>
+  }
+  @if (gameState() === 'game_over') {
+    <button class="btn-action d-md-none" (click)="startGame()">Play Again</button>
+  }
+
+  <p class="hint d-none d-md-block">Arrow keys or WASD to move &nbsp;·&nbsp; Space to pause</p>
+</div>

@@ -1,0 +1,13 @@
+.app-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--ns-border);
+
+  .nav-logo {
+    height: 60px;
+    width: auto;
+  }
+}
+
+main {
+  min-height: calc(100vh - 61px);
+}
