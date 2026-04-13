@@ -20,9 +20,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
       - name: Build and tag docker image
-        run: docker build -t nikitasreenath/nikisaunak:${{ github.ref_name }} .
+        run: docker build -f frontend/Dockerfile frontend/ -t nikitasreenath/nikisaunak:${{ github.ref_name }}
       - name: Push docker image
-        run: docker push nikitasreenath/niki-saunak:${{ github.ref_name }}
+        run: docker push nikitasreenath/nikisaunak:${{ github.ref_name }}
   
   deploy-new-image: 
     runs-on: ubuntu-latest
