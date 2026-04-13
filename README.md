@@ -1,6 +1,6 @@
-# NikiSaunak Website Frontend
+# NikiSaunak Website
 
-This repo contains the frontend for the nikisaunak.com website written in Angular. This project is a joint collaboration with [@nikitasreenath](https://github.com/nikitasreenath)
+This repo contains code for the nikisaunak.com website. The frontend is written in Angular and the backend is written with Python. This project is a joint collaboration with [@nikitasreenath](https://github.com/nikitasreenath)
 
 ## Local Installation Instructions
 
@@ -51,7 +51,7 @@ npm install -g @angular/cli
 ```
 
 ### Running Application
-Inside the project directory run the following commands:
+Inside the `frontend/` directory run the following commands:
 
 #### Install Dependencies
 ```bash
@@ -84,15 +84,31 @@ If it isn't installed, follow the [official Docker installation guide](https://d
 
 ### Build and Run
 
-```bash
-# Build the Docker image (runs the Angular build internally)
-docker build -t niki-saunak .
+#### Option A - Run everything with Docker Compose (recommended)
 
-# Start the container
-docker run --rm -p 8080:80 niki-saunak
+```bash
+docker-compose up --build
 ```
 
-Once running, open your browser and navigate to `http://localhost:8080/`
+#### Option B - Run Frontend & Backend containers seperately
+
+```bash
+# Build the frontend Docker image (runs the Angular build internally)
+docker build -f frontend/Dockerfile frontend/ -t niki-saunak-frontend
+
+# Start the container
+docker run --rm -p 8080:80 niki-saunak-frontend
+```
+
+```bash
+# Build the backend Docker image
+docker build -f backend/Dockerfile backend/ -t niki-saunak-backend
+
+# Start the backend container
+docker run --rm -p 8000:8000 niki-saunak-backend
+```
+Once running, open your browser and navigate to `http://localhost:8080/` for the website view. The backend API can be queried  at `http://localhost:8000/`
+
 
 > [!NOTE]
 > The Docker build runs `npm ci` and `npm run build` inside the container, so no local Node.js installation is needed. The final image contains only NGINX and the compiled static files.
