@@ -24,7 +24,8 @@ jobs:
       - name: Push docker image
         run: docker push nikitasreenath/nikisaunak:${{ github.ref_name }}
   
-  deploy-new-image: 
+  deploy-new-image:
+    needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
       - run: echo "SSH into Droplet"
