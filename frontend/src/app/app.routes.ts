@@ -13,5 +13,9 @@ export const routes: Routes = [
     path: 'minesweeper',
     loadComponent: () => import('./games/minesweeper/minesweeper').then((m) => m.MinesweeperComponent),
   },
+  {
+    path: 'transit',
+    loadComponent: () => import('./transit/transit').then((m) => m.TransitComponent),
+  },
   { path: '**', redirectTo: '' },
 ];
