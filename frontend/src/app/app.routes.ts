@@ -9,5 +9,9 @@ export const routes: Routes = [
     path: 'snake',
     loadComponent: () => import('./games/snake/snake').then((m) => m.SnakeComponent),
   },
+  {
+    path: 'minesweeper',
+    loadComponent: () => import('./games/minesweeper/minesweeper').then((m) => m.MinesweeperComponent),
+  },
   { path: '**', redirectTo: '' },
 ];
