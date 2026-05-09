@@ -1,0 +1,61 @@
+<div class="ms-page">
+
+  <div class="ms-header">
+    <a class="btn-back" routerLink="/">← Home</a>
+    <span class="ms-title">💣 Minesweeper time</span>
+    @if (bestTime() !== null) {
+      <span class="ms-best">🏆 Best: {{ bestTime() }}s</span>
+    } @else {
+      <span class="ms-best"></span>
+    }
+  </div>
+
+  <button class="ms-sticker-float" (click)="resetGame()" aria-label="New game">
+    <img [src]="stickerSrc()" alt="sticker" class="ms-sticker-img" />
+  </button>
+
+  <div class="ms-panel-wrapper">
+
+    <div class="ms-panel">
+      <div class="ms-counter" [class.negative]="minesLeft() < 0">
+        <span class="counter-digit">{{ formatCounter(displayMines())[0] }}</span>
+        <span class="counter-digit">{{ formatCounter(displayMines())[1] }}</span>
+        <span class="counter-digit">{{ formatCounter(displayMines())[2] }}</span>
+      </div>
+      <div class="ms-counter">
+        <span class="counter-digit">{{ formatCounter(displayTime())[0] }}</span>
+        <span class="counter-digit">{{ formatCounter(displayTime())[1] }}</span>
+        <span class="counter-digit">{{ formatCounter(displayTime())[2] }}</span>
+      </div>
+    </div>
+
+    <div class="ms-board" (contextmenu)="$event.preventDefault()">
+      @for (row of board(); track $index; let r = $index) {
+        <div class="ms-row">
+          @for (cell of row; track $index; let c = $index) {
+            <div
+              class="ms-cell"
+              [ngClass]="getCellClasses(cell)"
+              (click)="onCellClick(r, c)"
+              (contextmenu)="onCellRightClick(r, c, $event)"
+              (touchstart)="onCellTouchStart(r, c)"
+              (touchend)="onCellTouchEnd()"
+              (touchmove)="onCellTouchMove()"
+            >{{ getCellDisplay(cell) }}</div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
+  @if (gameState() === 'won') {
+    <p class="ms-status ms-status--win">Damn girl you so smart 👀</p>
+  }
+  @if (gameState() === 'lost') {
+    <p class="ms-status ms-status--lose">Try again :*</p>
+  }
+
+  <p class="hint">Left click to reveal &nbsp;·&nbsp; Right click / long press to flag</p>
+
+</div>
