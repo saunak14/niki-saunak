@@ -1,4 +1,4 @@
-name: feature
+name: test
 run-name: FEATURE - Building and Pushing Docker Image
 on: workflow_dispatch
 env:
