@@ -24,18 +24,12 @@ jobs:
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - run: echo "SSH into Droplet"
-      - name: Login to Droplet
-        uses: appleboy/ssh-action@v1
+      - uses: actions/checkout@v2
+      - uses: humbertocrispim/ssh-docker-compose-action@v1.0.0
+        name: Remote Deployment with Docker-Compose
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            docker pull nikitasreenath/nikisaunak-frontend:${{ github.sha }}
-            docker pull nikitasreenath/nikisaunak-backend:${{ github.sha }}
-            docker image list
-            docker ps -aq | xargs docker rm -f
-            docker run -d --restart unless-stopped --name nikisaunak-backend -p 8000:8000 nikitasreenath/nikisaunak-backend:${{ github.sha }}
-            docker run -d --restart unless-stopped --name nikisaunak-frontend -p 8080:80 nikitasreenath/nikisaunak-frontend:${{ github.sha }}
+          ssh_host: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          ssh_user: ${{ secrets.SSH_USERNAME }}
+          docker_compose_prefix: nikisaunak
+          pull: true # Update images when pulling   
