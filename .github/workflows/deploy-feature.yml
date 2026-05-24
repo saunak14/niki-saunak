@@ -32,4 +32,5 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_KEY }}
           ssh_user: ${{ secrets.SSH_USERNAME }}
           docker_compose_prefix: nikisaunak
+          docker_compose_filename: ./docker-compose.yml
           pull: true # Update images when pulling   
