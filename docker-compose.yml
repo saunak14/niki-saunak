@@ -1,10 +1,14 @@
 services:
   frontend:
+    image: nikitasreenath/nikisaunak-frontend:${IMAGE_TAG}
+    pull_policy: always
     build: ./frontend
     ports:
       - "8080:80"
 
   backend:
+    image: nikitasreenath/nikisaunak-backend:${IMAGE_TAG}
+    pull_policy: always
     build: ./backend
     ports:
       - "8000:8000"
