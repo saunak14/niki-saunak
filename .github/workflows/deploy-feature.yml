@@ -24,13 +24,18 @@ jobs:
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: alex-ac/github-action-ssh-docker-compose@master
-        name: Remote Deployment with Docker-Compose
+      - run: echo "SSH into Droplet"
+      - name: Login to Droplet
+        uses: appleboy/ssh-action@v1
         with:
-          ssh_host: ${{ secrets.HOST }}
-          ssh_private_key: ${{ secrets.SSH_KEY }}
-          ssh_user: ${{ secrets.SSH_USERNAME }}
-          docker_compose_prefix: nikisaunak
-          docker_compose_filename: ./docker-compose.yml
-          pull: true # Update images when pulling   
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            export IMAGE_TAG=${{ env.IMAGE_TAG }}
+            export TRANSIT_511_API_KEY=${{ env.TRANSIT_511_API_KEY }}
+            docker ps -aq | xargs docker rm -f
+            cd /home/nikita/niki-saunak && git checkout ${{ github.ref_name }} && git pull origin ${{ github.ref_name }}
+            docker compose up -d --no-build
+            unset IMAGE_TAG && unset TRANSIT_511_API_KEY
