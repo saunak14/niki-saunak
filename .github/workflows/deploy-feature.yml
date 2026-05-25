@@ -15,16 +15,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v4.2.2
-      - name: Build and push docker images
+      - name: Build and Push Docker Images
         uses: 0x4r45h/docker-compose-ci@v0.1.0
 
   deploy-new-image:
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - run: echo "SSH into Droplet"
+      - run: SSH into Droplet and Deploy Containers
       - name: Login to Droplet
         uses: appleboy/ssh-action@v1
         with:
