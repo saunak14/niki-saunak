@@ -29,7 +29,6 @@ jobs:
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - run: SSH into Droplet and Deploy Containers
       - name: Login to Droplet
         uses: appleboy/ssh-action@v1
         with:
