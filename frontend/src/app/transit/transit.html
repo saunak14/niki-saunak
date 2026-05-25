@@ -1,0 +1,113 @@
+<div class="transit-page">
+
+  <!-- Header -->
+  <div class="transit-header container-lg">
+    <a class="back-link" routerLink="/">← Home</a>
+    <div class="header-center">
+      <h1 class="departures-title">DEPARTURES</h1>
+    </div>
+    <div class="header-status">
+      @if (!fetchError() && data()) {
+        <span class="live-badge">
+          <span class="live-dot"></span>LIVE
+        </span>
+        <span class="updated-label">updated {{ secondsAgo() }}s ago</span>
+      }
+      @if (fetchError()) {
+        <span class="error-badge">⚠ offline</span>
+      }
+    </div>
+  </div>
+
+  <!-- Loading skeletons -->
+  @if (loading()) {
+    <div class="stops-grid container-lg">
+      @for (s of skeletons; track $index) {
+        <div class="stop-card stop-card--skeleton">
+          <div class="skeleton-line skeleton-line--title"></div>
+          <div class="skeleton-line skeleton-line--sub"></div>
+          <div class="skeleton-times">
+            <div class="skeleton-chip"></div>
+            <div class="skeleton-chip"></div>
+            <div class="skeleton-chip"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Stop cards -->
+  @if (!loading() && data()) {
+    <div class="stops-grid container-lg">
+      @for (stop of data()!.stops; track stop.id) {
+        <div class="stop-card" [style.--accent]="stop.color">
+
+          <!-- Card top row: name + activity -->
+          <div class="card-top">
+            <span class="route-name">{{ stop.name }}</span>
+            @if (stop.activity) {
+              <span class="activity-pill" [style.--pill-color]="stop.color">
+                {{ activityEmoji(stop.activity) }} {{ stop.activity }}
+              </span>
+            }
+          </div>
+
+          <!-- Direction subtitle -->
+          <div class="card-subtitle">{{ stop.subtitle }}</div>
+
+          <!-- Arrivals -->
+          @if (!stop.error && stop.arrivals.length > 0) {
+            @if (isBart(stop)) {
+              <!-- BART: list with per-line color dots -->
+              <div class="bart-arrivals">
+                @for (arrival of stop.arrivals; track $index) {
+                  <div class="bart-row">
+                    <span class="bart-dot" [style.background]="arrival.color ?? stop.color"></span>
+                    <span class="bart-dest">{{ arrival.destination }}</span>
+                    <span class="bart-time">
+                      {{ minuteLabel(arrival.minutes) }}
+                      @if (arrival.minutes > 0) {<span class="time-unit">min</span>}
+                    </span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <!-- Muni: three big time chips -->
+              <div class="muni-chips">
+                @for (arrival of stop.arrivals; track $index) {
+                  <div class="time-chip">
+                    <span class="chip-number">{{ minuteLabel(arrival.minutes) }}</span>
+                    @if (arrival.minutes > 0) {
+                      <span class="chip-unit">min</span>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+
+          <!-- No arrivals / error -->
+          @if (!stop.error && stop.arrivals.length === 0) {
+            <div class="no-arrivals">No upcoming arrivals</div>
+          }
+          @if (stop.error) {
+            <div class="no-arrivals">
+              {{ stop.error_detail ?? 'Unable to fetch arrivals' }}
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Full fetch error -->
+  @if (!loading() && fetchError()) {
+    <div class="container-lg">
+      <div class="fetch-error">
+        <p>Could not reach the backend. Make sure the server is running.</p>
+      </div>
+    </div>
+  }
+
+</div>

@@ -2,6 +2,10 @@ name: feature
 run-name: FEATURE - Building and Pushing Docker Image
 on: workflow_dispatch
 
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  TRANSIT_511_API_KEY: ${{ secrets.TRANSIT_511_API_KEY }}
+
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
@@ -11,19 +15,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: echo "Building Docker image from ${{ github.sha }}"
-      - name: Checkout repo
-        uses: actions/checkout@v5
-      - name: Build and tag docker image
-        run: docker build -f frontend/Dockerfile frontend/ -t nikitasreenath/nikisaunak:${{ github.sha }}
-      - name: Push docker image
-        run: docker push nikitasreenath/nikisaunak:${{ github.sha }}
-  
+      - name: Checkout Repo
+        uses: actions/checkout@v4.2.2
+      - name: Build and Push Docker Images
+        uses: 0x4r45h/docker-compose-ci@v0.1.0
+
   deploy-new-image:
     needs: docker-build-push
     runs-on: ubuntu-latest
     steps:
-      - run: echo "SSH into Droplet"
       - name: Login to Droplet
         uses: appleboy/ssh-action@v1
         with:
@@ -32,7 +32,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker pull nikitasreenath/nikisaunak:${{ github.sha }}
-            docker image list
+            export IMAGE_TAG=${{ env.IMAGE_TAG }}
+            export TRANSIT_511_API_KEY=${{ env.TRANSIT_511_API_KEY }}
             docker ps -aq | xargs docker rm -f
-            docker run -d --restart unless-stopped --name niki-saunak-frontend -p 8080:80 nikitasreenath/nikisaunak:${{ github.sha }}
+            cd /home/nikita/niki-saunak && git checkout ${{ github.ref_name }} && git pull origin ${{ github.ref_name }}
+            docker compose up -d --no-build
+            unset IMAGE_TAG && unset TRANSIT_511_API_KEY

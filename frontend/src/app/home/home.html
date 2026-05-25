@@ -22,7 +22,7 @@
           </div>
           <div class="widget-footer">
             @if (widget.active) {
-              <span class="badge-play">Play</span>
+              <span class="badge-play">{{ widget.action ?? 'Play' }}</span>
             } @else {
               <span class="badge-soon">Coming Soon</span>
             }
