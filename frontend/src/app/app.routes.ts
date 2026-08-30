@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'wordle',
     loadComponent: () => import('./games/wordle/wordle').then((m) => m.WordleComponent),
   },
+  {
+    path: 'transit',
+    loadComponent: () => import('./transit/transit').then((m) => m.TransitComponent),
+  },
   { path: '**', redirectTo: '' },
 ];

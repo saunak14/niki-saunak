@@ -39,7 +39,11 @@ backend/.venv/
 backend/__pycache__/
 backend/**/__pycache__/
 backend/data/words.db
+*.py[cod]
 
 # System files
 .DS_Store
 Thumbs.db
+
+# Secrets — never commit real values
+.env

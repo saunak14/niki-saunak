@@ -1,11 +1,17 @@
 services:
   frontend:
+    image: nikitasreenath/nikisaunak-frontend:${IMAGE_TAG}
+    pull_policy: always
     build: ./frontend
     ports:
       - "8080:80"
 
   backend:
+    image: nikitasreenath/nikisaunak-backend:${IMAGE_TAG}
+    pull_policy: always
     build: ./backend
+    environment:
+      TRANSIT_511_API_KEY: "${TRANSIT_511_API_KEY}"
     volumes:
       - wordle_data:/app/data
 

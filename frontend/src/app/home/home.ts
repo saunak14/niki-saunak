@@ -7,6 +7,7 @@ interface Widget {
   desc: string;
   route: string | null;
   active: boolean;
+  action?: string;
 }
 
 @Component({
@@ -23,8 +24,8 @@ export class HomeComponent {
     { icon: '🐍', name: 'Snake', desc: 'A colorful twist on the classic', route: '/snake', active: true },
     { icon: '🌤️', name: 'Weather', desc: 'See the weather at hotties\' locations', route: null, active: false },
     { icon: '🏀', name: 'Sports Scores', desc: 'For Saunak to follow his favorite teams (and for Niki to understand Saunak\'s mood', route: null, active: false },
-    { icon: '🚌', name: 'Transit', desc: 'BART & bus stop times near Saunak\'s house', route: null, active: false },
     { icon: '💣', name: 'Minesweeper', desc: 'Niki\'s favorite pastime', route: '/minesweeper', active: true },
+    { icon: '🚌', name: 'Transit', desc: 'BART & bus stop times near Saunak\'s house', route: '/transit', active: true, action: 'View' },
     { icon: '🔤', name: 'Wordle', desc: 'Unlimited Wordle just for us', route: '/wordle', active: true },
   ];
 
