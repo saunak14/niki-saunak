@@ -14,3 +14,8 @@ services:
       - "8000:8000"
     environment:
       TRANSIT_511_API_KEY: "${TRANSIT_511_API_KEY}"
+    volumes:
+      - wordle_data:/app/data
+
+volumes:
+  wordle_data:

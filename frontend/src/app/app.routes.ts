@@ -14,6 +14,10 @@ export const routes: Routes = [
     loadComponent: () => import('./games/minesweeper/minesweeper').then((m) => m.MinesweeperComponent),
   },
   {
+    path: 'wordle',
+    loadComponent: () => import('./games/wordle/wordle').then((m) => m.WordleComponent),
+  },
+  {
     path: 'transit',
     loadComponent: () => import('./transit/transit').then((m) => m.TransitComponent),
   },

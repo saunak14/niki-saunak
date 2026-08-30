@@ -1,0 +1,117 @@
+<input
+  #hiddenInput
+  class="hidden-input"
+  type="text"
+  autocomplete="off"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="false"
+  (input)="onHiddenInput($event)"
+  (keydown)="onHiddenKeydown($event)"
+  aria-hidden="true"
+/>
+<div class="wordle-page">
+  <div class="wordle-header">
+    <a class="btn-back" routerLink="/">← Home</a>
+    <h1 class="wordle-title">Wordle</h1>
+    <div class="header-spacer"></div>
+  </div>
+
+  @if (gameState() === 'loading') {
+    <div class="state-message">Loading word…</div>
+  }
+
+  @if (gameState() === 'error') {
+    <div class="state-message state-message--error">
+      <p>Could not connect to the server.</p>
+      <button class="btn-action" (click)="loadCurrentWord()">Retry</button>
+    </div>
+  }
+
+  @if (gameState() !== 'loading' && gameState() !== 'error') {
+    <!-- Error banner -->
+    @if (errorMsg()) {
+      <div class="error-banner">{{ errorMsg() }}</div>
+    }
+
+    <!-- Known letters so far -->
+    @if (gameState() === 'playing') {
+      <div class="known-word">
+        @for (letter of knownLetters(); track $index) {
+          <span class="known-cell" [class.known-filled]="letter !== '_'">{{ letter }}</span>
+        }
+      </div>
+    }
+
+    <!-- Guess grid -->
+    <div class="grid-wrapper" (click)="focusHiddenInput()">
+      <div class="guess-grid" [style.--word-len]="wordMeta()?.length ?? 5">
+        @for (rowIdx of rowIndices; track rowIdx) {
+          <div class="word-row">
+            @for (colIdx of wordIndices(); track colIdx) {
+              <div
+                class="letter-cell"
+                [style.--col]="colIdx"
+                [ngClass]="{
+                  'correct':   getResult(rowIdx, colIdx) === 'correct',
+                  'present':   getResult(rowIdx, colIdx) === 'present',
+                  'absent':    getResult(rowIdx, colIdx) === 'absent',
+                  'filled':    getLetter(rowIdx, colIdx) !== '',
+                  'active':    rowIdx === guesses().length && gameState() === 'playing',
+                  'revealing': animatingRow() === rowIdx
+                }"
+              >{{ getLetter(rowIdx, colIdx) }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Result overlay -->
+    @if (gameState() === 'won' || gameState() === 'lost') {
+      <div class="result-panel">
+        @if (gameState() === 'won') {
+          <div class="result-emoji">❤️‍🔥</div>
+          <div class="result-title">Yayy</div>
+        } @else {
+          <div class="result-emoji">🫠</div>
+          <div class="result-title">The word was</div>
+        }
+        <div class="revealed-word">{{ revealedWord() }}</div>
+        <div class="result-actions">
+          <button class="btn-action" (click)="nextWord()">Next word →</button>
+        </div>
+      </div>
+    }
+
+    <!-- On-screen keyboard -->
+    @if (gameState() === 'playing') {
+      <div class="keyboard">
+        @for (row of keyboardRows; track $index) {
+          <div class="key-row">
+            @if ($index === 2) {
+              <button class="key key-enter" (click)="submitGuess()" [disabled]="isSubmitting()">
+                Enter
+              </button>
+            }
+            @for (key of row; track key) {
+              @if (key === '⌫') {
+                <button class="key key-delete" (click)="onKeyPress(key)">⌫</button>
+              } @else {
+                <button
+                  class="key"
+                  [ngClass]="{
+                    'key-correct': letterStates().get(key) === 'correct',
+                    'key-present': letterStates().get(key) === 'present',
+                    'key-absent':  letterStates().get(key) === 'absent'
+                  }"
+                  (click)="onKeyPress(key)"
+                >{{ key }}</button>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

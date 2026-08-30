@@ -34,13 +34,16 @@ testem.log
 /typings
 __screenshots__/
 
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/data/words.db
+*.py[cod]
+
 # System files
 .DS_Store
 Thumbs.db
-
-# Python
-__pycache__/
-*.py[cod]
 
 # Secrets — never commit real values
 .env

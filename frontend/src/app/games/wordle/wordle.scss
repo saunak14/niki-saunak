@@ -1,0 +1,322 @@
+.hidden-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: none;
+  outline: none;
+  padding: 0;
+  pointer-events: none;
+}
+
+.wordle-page {
+  min-height: 100vh;
+  background: var(--ns-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: 2rem;
+}
+
+// ─── Header ────────────────────────────────────────────────────────────────────
+
+.wordle-header {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wordle-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ns-text);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.header-spacer {
+  // mirrors btn-back width so title stays centered
+  min-width: 4rem;
+}
+
+.btn-back {
+  color: var(--ns-text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ns-text);
+  }
+}
+
+// ─── State messages ─────────────────────────────────────────────────────────────
+
+.state-message {
+  color: var(--ns-text-muted);
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  &--error {
+    color: #c0392b;
+  }
+}
+
+.error-banner {
+  background: #fff3cd;
+  border: 1px solid #ffe080;
+  color: #856404;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  animation: shake 0.3s ease;
+}
+
+@keyframes tile-reveal {
+  0%   { transform: translateY(-8px) scale(0.85); opacity: 0.4; }
+  60%  { transform: translateY(3px)  scale(1.06); opacity: 1;   }
+  100% { transform: translateY(0)    scale(1);    opacity: 1;   }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+// ─── Known letters display ──────────────────────────────────────────────────────
+
+.known-word {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.known-cell {
+  width: 32px;
+  height: 32px;
+  border-bottom: 2px solid var(--ns-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ns-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &.known-filled {
+    color: #5fa35a;
+    border-color: #5fa35a;
+  }
+}
+
+// ─── Guess grid ────────────────────────────────────────────────────────────────
+
+.grid-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.guess-grid {
+  --cell-size: clamp(36px, calc(min(90vw, 400px) / var(--word-len)), 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.word-row {
+  display: flex;
+  gap: 6px;
+}
+
+.letter-cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 2px solid var(--ns-accent);
+  background: var(--ns-card);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--cell-size) * 0.45);
+  font-weight: 700;
+  color: var(--ns-text);
+  text-transform: uppercase;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+
+  &.filled {
+    border-color: var(--ns-text-muted);
+    transform: scale(1.04);
+  }
+
+  &.active {
+    border-color: var(--ns-text);
+  }
+
+  &.correct {
+    background: #5fa35a;
+    border-color: #5fa35a;
+    color: #fff;
+    transform: scale(1);
+  }
+
+  &.present {
+    background: #e0853f;
+    border-color: #e0853f;
+    color: #fff;
+    transform: scale(1);
+  }
+
+  &.absent {
+    background: #b0b09a;
+    border-color: #b0b09a;
+    color: #fff;
+    transform: scale(1);
+  }
+
+  &.revealing {
+    animation: tile-reveal 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--col) * 80ms);
+  }
+}
+
+// ─── Result panel ───────────────────────────────────────────────────────────────
+
+.result-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 2rem;
+  background: var(--ns-card);
+  border: 1px solid var(--ns-border);
+  border-radius: 16px;
+  max-width: 320px;
+  text-align: center;
+}
+
+.result-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.result-title {
+  font-size: 0.9rem;
+  color: var(--ns-text-muted);
+  font-weight: 500;
+}
+
+.revealed-word {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--ns-text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.result-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-action {
+  background: var(--ns-text);
+  border: none;
+  color: #fff;
+  border-radius: 25px;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// ─── On-screen keyboard ─────────────────────────────────────────────────────────
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.key-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.key {
+  --key-h: clamp(40px, 7vw, 56px);
+  --key-w: clamp(26px, 5vw, 40px);
+
+  height: var(--key-h);
+  min-width: var(--key-w);
+  padding: 0 4px;
+  border: 1px solid var(--ns-border);
+  border-radius: 6px;
+  background: var(--ns-card);
+  color: var(--ns-text);
+  font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.1s, transform 0.08s;
+  user-select: none;
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &.key-correct {
+    background: #5fa35a;
+    border-color: #5fa35a;
+    color: #fff;
+  }
+
+  &.key-present {
+    background: #e0853f;
+    border-color: #e0853f;
+    color: #fff;
+  }
+
+  &.key-absent {
+    background: #b0b09a;
+    border-color: #b0b09a;
+    color: #fff;
+  }
+}
+
+.key-enter {
+  min-width: clamp(44px, 9vw, 64px);
+  font-size: clamp(0.6rem, 2vw, 0.75rem);
+}
+
+.key-delete {
+  min-width: clamp(44px, 9vw, 64px);
+}

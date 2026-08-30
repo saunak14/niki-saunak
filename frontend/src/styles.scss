@@ -1,12 +1,21 @@
 @import "bootstrap/scss/bootstrap";
 
 :root {
-  --ns-bg: #ffffc6;
-  --ns-card: #ffffb1;
-  --ns-text: #216568;
-  --ns-text-muted: #5a8d8f;
-  --ns-accent: #c4c96e;
-  --ns-border: #fdffe0;
+  --ns-bg: #fff1fa;
+  --ns-card: #D2C6F2;
+  --ns-text: #000000;
+  --ns-text-muted: #000000;
+  --ns-accent: #fff1fa;
+  --ns-border: #D2C6F2;
+  font-family: "Hina Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.hina-mincho-regular {
+  font-family: "Hina Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 body {
