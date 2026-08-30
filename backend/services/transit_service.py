@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import asyncio
 from datetime import datetime, timezone
@@ -8,6 +9,8 @@ import httpx
 from cachetools import TTLCache
 
 from config.transit_stops import BART_STOPS, MUNI_STOPS, BartStop, MuniStop
+
+logger = logging.getLogger(__name__)
 
 BART_PUBLIC_KEY = "MW9S-E7SL-26DU-VV8V"
 BART_ETD_URL = "https://api.bart.gov/api/etd.aspx"
@@ -96,6 +99,9 @@ async def fetch_bart_arrivals(stop: BartStop, max_results: int = 3) -> dict:
         result["color"] = "#009B3A"
         result["arrivals"] = arrivals
     except Exception:
+        logger.exception(
+            "BART fetch failed for station=%s direction=%s", stop.station, stop.direction
+        )
         result["error"] = True
 
     _cache[key] = result
@@ -119,6 +125,7 @@ async def fetch_muni_arrivals(stop: MuniStop, max_results: int = 3) -> dict:
 
     api_key = os.environ.get("TRANSIT_511_API_KEY", "").strip()
     if not api_key:
+        logger.warning("Muni fetch skipped for stop_code=%s: TRANSIT_511_API_KEY not configured", stop.stop_code)
         result["error"] = True
         result["error_detail"] = "TRANSIT_511_API_KEY not configured"
         _cache[key] = result
@@ -166,6 +173,9 @@ async def fetch_muni_arrivals(stop: MuniStop, max_results: int = 3) -> dict:
 
         result["arrivals"] = arrivals
     except Exception:
+        logger.exception(
+            "Muni fetch failed for stop_code=%s route=%s", stop.stop_code, stop.route
+        )
         result["error"] = True
 
     _cache[key] = result
