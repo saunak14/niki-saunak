@@ -9,7 +9,7 @@ from models.wordle import WordleState, WordleWord
 
 LetterResult = Literal["correct", "present", "absent"]
 
-_ENABLE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "enable1.txt")
+_ENABLE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "dictionary.txt")
 _english_words: frozenset[str] | None = None
 
 

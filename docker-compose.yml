@@ -10,6 +10,8 @@ services:
     image: nikitasreenath/nikisaunak-backend:${IMAGE_TAG}
     pull_policy: always
     build: ./backend
+    ports:
+      - "8000:8000"
     environment:
       TRANSIT_511_API_KEY: "${TRANSIT_511_API_KEY}"
     volumes:
