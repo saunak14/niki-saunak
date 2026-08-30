@@ -25,6 +25,7 @@ export class HomeComponent {
     { icon: '🏀', name: 'Sports Scores', desc: 'For Saunak to follow his favorite teams (and for Niki to understand Saunak\'s mood', route: null, active: false },
     { icon: '🚌', name: 'Transit', desc: 'BART & bus stop times near Saunak\'s house', route: null, active: false },
     { icon: '💣', name: 'Minesweeper', desc: 'Niki\'s favorite pastime', route: '/minesweeper', active: true },
+    { icon: '🔤', name: 'Wordle', desc: 'Unlimited Wordle just for us', route: '/wordle', active: true },
   ];
 
   navigate(widget: Widget): void {
